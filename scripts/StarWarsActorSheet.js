@@ -6,13 +6,6 @@ export class StarWarsActorSheet extends alienrpgActorSheet {
         super(...args);
     }
 
-    static get defaultOptions() {
-        const options = super.defaultOptions;
-        options.classes.push("star-wars");
-
-        return options;
-    }
-
     get template() {
         return `modules/${moduleName}/templates/starWarsActorSheetTemplate.hbs`;
     }
@@ -25,7 +18,7 @@ export class StarWarsActorSheet extends alienrpgActorSheet {
             data[type] = {};
             const table = game.tables.find(t => t.name === e);
             if (!table) continue;
-            
+
             table.results.contents.forEach(r => {
                 const val = r.data.text;
                 data[type][val] = val;
