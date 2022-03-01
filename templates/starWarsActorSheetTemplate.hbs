@@ -322,40 +322,12 @@
                 <div class="Item2">
                     <div class="grid-two">
                         <label class="resource-label" style="font-weight: bold;">Species</label>
-                        <select class="select-css" name="data.general.career.value"
-                            data-dtype="{{data.general.career.value}}">
-                            {{#select data.general.career.value}}
-                            <!-- <option value=""></option> -->
-                            <option value="1">{{localize "ALIENRPG.ColonialMarine"}}</option>
-                            <option value="2">{{localize "ALIENRPG.ColonialMarshal"}}</option>
-                            <option value="3">{{localize "ALIENRPG.CompanyAgent"}}</option>
-                            <option value="4">{{localize "ALIENRPG.Kid"}}</option>
-                            <option value="5">{{localize "ALIENRPG.Medic"}}</option>
-                            <option value="6">{{localize "ALIENRPG.Mercenary"}}</option>
-                            <option value="7">{{localize "ALIENRPG.Officer"}}</option>
-                            <option value="8">{{localize "ALIENRPG.Pilot"}}</option>
-                            <option value="9">{{localize "ALIENRPG.Roughneck"}}</option>
-                            <option value="10">{{localize "ALIENRPG.Scientist"}}</option>
-                            <option value="11">{{localize "ALIENRPG.Synthetic"}}</option>
-                            {{/select}}
+                        <select class="select-css" name="data.general.species.value">
+                            {{selectOptions species selected=data.general.species.value}}
                         </select>
                         <label class="resource-label" style="font-weight: bold;">Career</label>
-                        <select class="select-css" name="data.general.career.value"
-                            data-dtype="{{data.general.career.value}}">
-                            {{#select data.general.career.value}}
-                            <!-- <option value=""></option> -->
-                            <option value="1">{{localize "ALIENRPG.ColonialMarine"}}</option>
-                            <option value="2">{{localize "ALIENRPG.ColonialMarshal"}}</option>
-                            <option value="3">{{localize "ALIENRPG.CompanyAgent"}}</option>
-                            <option value="4">{{localize "ALIENRPG.Kid"}}</option>
-                            <option value="5">{{localize "ALIENRPG.Medic"}}</option>
-                            <option value="6">{{localize "ALIENRPG.Mercenary"}}</option>
-                            <option value="7">{{localize "ALIENRPG.Officer"}}</option>
-                            <option value="8">{{localize "ALIENRPG.Pilot"}}</option>
-                            <option value="9">{{localize "ALIENRPG.Roughneck"}}</option>
-                            <option value="10">{{localize "ALIENRPG.Scientist"}}</option>
-                            <option value="11">{{localize "ALIENRPG.Synthetic"}}</option>
-                            {{/select}}
+                        <select class="select-css" name="data.general.career.value">
+                            {{selectOptions careers selected=data.general.career.value}}
                         </select>
                     </div>
                     <br>
@@ -364,7 +336,7 @@
                 <div class="Item4">
                     <label class="resource-label" style="font-weight: bold;">{{ localize "ALIENRPG.Appearance"}}</label>
                     <br>
-                    <textarea name="data.general.appearance.value" rows="8"
+                    <textarea name="data.general.appearance.value" rows="3"
                         data-dtype="String">{{data.general.appearance.value}}</textarea>
                 </div>
 
@@ -377,10 +349,13 @@
                 </div>
 
                 <div class="Item3">
-                    <label class="resource-label" style="font-weight: bold;">{{ localize
-                        "ALIENRPG.PersonalAgenda"}}</label>
+                    <label class="resource-label" style="font-weight: bold;">Goal</label>
                     <textarea name="data.general.agenda.value" rows="3"
                         data-dtype="String">{{data.general.agenda.value}}</textarea>
+                    <label class="resource-label" style="font-weight: bold;">Weakness</label>
+                    <textarea name="data.general.weakness.value" rows="3"
+                        data-dtype="String">{{data.general.weakness.value}}</textarea>
+
                 </div>
 
                 <div class="Item6">
