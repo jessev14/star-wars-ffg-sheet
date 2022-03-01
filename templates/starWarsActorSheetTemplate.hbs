@@ -70,7 +70,7 @@
     </header>
 
     {{!-- Sheet Tab Navigation --}}
-    <nav class="sheet-tabs tabs" data-group="primary">
+    <nav class="sheet-tabs tabs" data-group="primary" style="height: unset">
         <a class="item" data-tab="general">{{localize "ALIENRPG.General"}}</a>
         <a class="item" data-tab="skills">{{localize "ALIENRPG.Skills"}}</a>
         <a class="item" data-tab="inventory">{{localize "ALIENRPG.Inventory"}}</a>
@@ -321,7 +321,7 @@
                 <!-- Col 2 -->
                 <div class="Item2">
                     <div class="grid-two">
-                        <label class="resource-label" style="font-weight: bold;">{{localize "ALIENRPG.Career"}}</label>
+                        <label class="resource-label" style="font-weight: bold;">Species</label>
                         <select class="select-css" name="data.general.career.value"
                             data-dtype="{{data.general.career.value}}">
                             {{#select data.general.career.value}}
@@ -339,21 +339,24 @@
                             <option value="11">{{localize "ALIENRPG.Synthetic"}}</option>
                             {{/select}}
                         </select>
-                        <div class="box3 resource-label">
-                            <label class="speciality-label" style="font-weight: bold;">{{localize
-                                'ALIENRPG.SPECIALTY'}}</label>
-                            <div class="item-controls ">
-                            </div>
-                        </div>
-                        <div class="box4">
-                            {{#each specialities as |item iid|}}
-                            <li class="item grid-special" data-item-id="{{item._id}}">
-                                <h4 class="item-name spe2" data-pmbut="{{item._id}}">{{item.name}} </h4>
-                                <a class="spe3 item-control item-edit1" data-item-id="{{item._id}}"
-                                    title="{{localize 'ALIENRPG.EditItem'}}"><i class="fas fa-edit"></i></a>
-                            </li>
-                            {{/each}}
-                        </div>
+                        <label class="resource-label" style="font-weight: bold;">Career</label>
+                        <select class="select-css" name="data.general.career.value"
+                            data-dtype="{{data.general.career.value}}">
+                            {{#select data.general.career.value}}
+                            <!-- <option value=""></option> -->
+                            <option value="1">{{localize "ALIENRPG.ColonialMarine"}}</option>
+                            <option value="2">{{localize "ALIENRPG.ColonialMarshal"}}</option>
+                            <option value="3">{{localize "ALIENRPG.CompanyAgent"}}</option>
+                            <option value="4">{{localize "ALIENRPG.Kid"}}</option>
+                            <option value="5">{{localize "ALIENRPG.Medic"}}</option>
+                            <option value="6">{{localize "ALIENRPG.Mercenary"}}</option>
+                            <option value="7">{{localize "ALIENRPG.Officer"}}</option>
+                            <option value="8">{{localize "ALIENRPG.Pilot"}}</option>
+                            <option value="9">{{localize "ALIENRPG.Roughneck"}}</option>
+                            <option value="10">{{localize "ALIENRPG.Scientist"}}</option>
+                            <option value="11">{{localize "ALIENRPG.Synthetic"}}</option>
+                            {{/select}}
+                        </select>
                     </div>
                     <br>
                 </div>
