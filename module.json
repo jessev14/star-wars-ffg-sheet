@@ -1,0 +1,12 @@
+{
+    "name": "star-wars-ffg-sheet",
+    "title": "Star Wars FFG Sheet",
+    "description": "",
+    "author": "enso#0361",
+    "version": "1.0.1",
+    "minimumCoreVersion": "9",
+    "compatibleCoreVersion": "9",
+    "esmodules": [
+        "./scripts/star-wars-ffg-sheet.js"
+    ]
+}
