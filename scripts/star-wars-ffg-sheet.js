@@ -242,7 +242,6 @@ async function starWarsRoll(wrapped, right) {
             blind = true;
         }
 
-
         if (item.data.header.type.value === '1') {
             //let r1Data = actorData.skills.rangedCbt.mod + itemData.attributes.bonus.value;
             let r1Data = actorData.attributes[itemData.attributes.attribute.value].value + itemData.attributes.bonus.value;
