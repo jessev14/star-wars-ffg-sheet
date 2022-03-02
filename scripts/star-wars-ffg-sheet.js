@@ -109,9 +109,6 @@ Hooks.once("init", () => {
     libWrapper.register(moduleName, "CONFIG.Actor.documentClass.prototype._prepareCharacterData", _prepareStarWarsCharacterData, "WRAPPER");    
 });
 
-Hooks.once("setup", () => {
-});
-
 
 Hooks.on("renderItemSheet", (sheet, html, itemData) => {
     // Allow skill-stunts items to be renamed to add stunts to new skills
