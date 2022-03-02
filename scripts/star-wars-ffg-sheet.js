@@ -211,7 +211,6 @@ async function starWarsRoll(wrapped, right) {
         if (this.type !== "weapon") return;
 
         // Basic template rendering data
-        const token = this.actor.token;
         const item = this.data;
         if (item.type === 'armor') {
             return;
@@ -223,8 +222,6 @@ async function starWarsRoll(wrapped, right) {
         game.alienrpg.rollArr.sCount = 0;
         game.alienrpg.rollArr.multiPush = 0;
 
-        let template = 'systems/alienrpg/templates/dialog/roll-all-dialog.html';
-        // let roll;
         let r2Data = 0;
         let reRoll = false;
         if (this.actor.data.type === 'character') {
