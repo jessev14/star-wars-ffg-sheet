@@ -326,9 +326,8 @@
                             {{selectOptions species selected=data.general.species.value}}
                         </select>
                         <label class="resource-label" style="font-weight: bold;">Career</label>
-                        <select class="select-css" name="data.general.career.value">
-                            {{selectOptions careers selected=data.general.career.value}}
-                        </select>
+                        <input type="text" class="textbox" name="data.general.career.value"
+                            value="{{data.general.career.value}}" rows="1" data-dtype="String" style="width: 87%"></textarea>
                     </div>
                     <br>
                 </div>
