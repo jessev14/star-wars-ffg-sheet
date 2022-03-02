@@ -208,6 +208,8 @@ async function starWarsRoll(wrapped, right) {
     try {
         await wrapped(right);
     } catch (err) {
+        if (this.type !== "weapon") return;
+
         // Basic template rendering data
         const token = this.actor.token;
         const item = this.data;
@@ -240,8 +242,6 @@ async function starWarsRoll(wrapped, right) {
             blind = true;
         }
 
-        //console.log(err)
-        if (this.type !== "weapon") return;
 
         if (item.data.header.type.value === '1') {
             //let r1Data = actorData.skills.rangedCbt.mod + itemData.attributes.bonus.value;
