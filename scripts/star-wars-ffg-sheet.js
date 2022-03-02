@@ -74,6 +74,23 @@ let ogSkills;
 
 Hooks.once("init", () => {
     // Register module settings
+    game.settings.register(moduleName, "storyPointsText", {
+        name: "Replace Story Points Label",
+        hint: "",
+        scope: "world",
+        config: true,
+        type: String,
+        default: "Force Points"
+    });
+
+    game.settings.register(moduleName, "radiationText", {
+        name: "Replace Radiation Label",
+        hint: "",
+        scope: "world",
+        config: true,
+        type: String,
+        default: "Radiation"
+    });
 
     // Register sheet application classes
     Actors.unregisterSheet("alienrpg", alienrpgActorSheet);

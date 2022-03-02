@@ -28,6 +28,9 @@ export class StarWarsActorSheet extends alienrpgActorSheet {
             data.species[val] = val;
         });
 
+        data.storyPointsReplacement = game.settings.get(moduleName, "storyPointsText");
+        data.radiationReplacement = game.settings.get(moduleName, "radiationText");
+
         return data;
     }
 }
