@@ -242,14 +242,11 @@ async function starWarsRoll(wrapped, right) {
             blind = true;
         }
 
+        const r1Data = actorData.attributes[itemData.attributes.attribute.value].mod + itemData.attributes.bonus.value;
         if (item.data.header.type.value === '1') {
-            //let r1Data = actorData.skills.rangedCbt.mod + itemData.attributes.bonus.value;
-            let r1Data = actorData.attributes[itemData.attributes.attribute.value].value + itemData.attributes.bonus.value;
             yze.yzeRoll(hostile, blind, reRoll, label, r1Data, game.i18n.localize('ALIENRPG.Black'), r2Data, game.i18n.localize('ALIENRPG.Yellow'), actorid, itemid);
             game.alienrpg.rollArr.sCount = game.alienrpg.rollArr.r1Six + game.alienrpg.rollArr.r2Six;
         } else if (item.data.header.type.value === '2') {
-            //let r1Data = actorData.skills.closeCbt.mod + itemData.attributes.bonus.value;
-            let r1Data = actorData.attributes[itemData.attributes.attribute.value].value + itemData.attributes.bonus.value;
             yze.yzeRoll(hostile, blind, reRoll, label, r1Data, game.i18n.localize('ALIENRPG.Black'), r2Data, game.i18n.localize('ALIENRPG.Yellow'), actorid, itemid);
             game.alienrpg.rollArr.sCount = game.alienrpg.rollArr.r1Six + game.alienrpg.rollArr.r2Six;
         } else {
