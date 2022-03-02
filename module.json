@@ -3,7 +3,7 @@
     "title": "Star Wars FFG Sheet",
     "description": "",
     "author": "enso#0361",
-    "version": "1.0.1",
+    "version": "1.0.0",
     "minimumCoreVersion": "9",
     "compatibleCoreVersion": "9",
     "esmodules": [
