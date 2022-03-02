@@ -195,9 +195,6 @@ function _prepareStarWarsCharacterData(wrapped, actorData) {
     // Call original function to handle core data preparation
     wrapped(actorData);
 
-    // Max XP = 12
-    setProperty(actorData, "data.general.xp.max", 12);
-
     // Remove original skills
     for (const skl of Object.keys(ogSkills)) {
         delete actorData.data.skills[skl];
