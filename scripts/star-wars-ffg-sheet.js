@@ -97,22 +97,50 @@ Hooks.once("setup", () => {
 
 
 Hooks.on("renderalienrpgItemSheet", (sheet, html, itemData) => {
-    if (itemData.type !== "skill-stunts") return;
-    
-    html.find(`select[name="name"]`).remove();
-    const nameInput = `<input name="name" type="text" value="${itemData.name}" />`;
-    html.find(`h1.charname`).append(nameInput);
+    // Allow skill-stunts items to be renamed to add stunts to new skills
+    if (itemData.type === "skill-stunts") {
+        html.find(`select[name="name"]`).remove();
+        const nameInput = `<input name="name" type="text" value="${itemData.name}" />`;
+        html.find(`h1.charname`).append(nameInput);
+
+        return;
+    }
+
+    // For item, armor, critical-injry items, replace skill modifiers
+
+    // For talent items, replace career select options with custom careers
+    if (itemData.type === "talent") {
+        const table = game.tables.find(t => t.name === "Playable Careers");
+        if (!table) return;
+
+        const careers = {};
+        table.results.contents.forEach(r => {
+            const val = r.data.text;
+            careers[val] = val;
+        });
+        const options = {
+            hash: {
+                selected: itemData.data.general.career.value
+            }
+        };
+        const newCareers = Handlebars.helpers.selectOptions.call(this, careers, options);
+        html.find(`select[name="data.general.career.value"]`).find(`option`).remove();
+        html.find(`select[name="data.general.career.value"]`).append(newCareers.string);
+
+        return;
+    }
 });
 
 
 function _prepareStarWarsCharacterData(wrapped, actorData) {
-    // Add new skills
+    // Add new skills; Perform this before calling original function so that original function processes these skills
     mergeObject(actorData.data.skills, swSkills);
     for (const [skl, skill] of Object.entries(actorData.data.skills)) {
         if (!skill.value) setProperty(actorData, `data.skills.${skl}.value`, 0);
         if (!skill.description) setProperty(actorData, `data.skills.${skl}.description`, skill.label);
     }
 
+    // Call original function to handle core data preparation
     wrapped(actorData);
 
     // Max XP = 12
