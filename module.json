@@ -8,5 +8,8 @@
     "compatibleCoreVersion": "9",
     "esmodules": [
         "./scripts/star-wars-ffg-sheet.js"
+    ],
+    "styles": [
+        "./styles/star-wars-ffg-sheet.css"
     ]
 }

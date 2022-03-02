@@ -6,6 +6,13 @@ export class StarWarsActorSheet extends alienrpgActorSheet {
         super(...args);
     }
 
+    static get defaultOptions() {
+        const options = super.defaultOptions;
+        options.classes.push('star-wars');
+
+        return options;
+    }
+
     get template() {
         return `modules/${moduleName}/templates/starWarsActorSheetTemplate.hbs`;
     }
