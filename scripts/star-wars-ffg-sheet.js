@@ -151,11 +151,13 @@ Hooks.on("renderItemSheet", (sheet, html, itemData) => {
         return;
     }
 
-    // Add Attribute select to weapon items
+    // Add Attribute and Skill selects to weapon items
     if (itemData.type === "weapon") {
-        html.find(`div.resources.grid-weapon`).css("grid-template-areas", '"wItem1 wItem2 wItem3 wItem4" "wItem5 wItem6 wItem7 wItem8"');
-        html.find(`h3.wItem6`).removeClass("wItem6").addClass("wItem5");
-        html.find(`div.selectBox.wItem7`).removeClass("wItem7").addClass("wItem6");
+        //html.find(`div.resources.grid-weapon`).css("grid-template-areas", '"wItem1 wItem2 wItem3 wItem4" "wItem5 wItem6 wItem7 wItem8"');
+        //html.find(`h3.wItem6`).removeClass("wItem6").addClass("wItem5");
+        //html.find(`div.selectBox.wItem7`).removeClass("wItem7").addClass("wItem6");
+
+        html.find(`div.grid-weapon-body`).css("grid-template-areas", '"wCol1 wCol2 wCol3 wCol4 wCol5 wCol6" "wCol7 wCol8 wCol9 wCol10 wCol11 wCol12" "wCol13 wCol14 wCol15 wCol16 wCol17 wCol18"');
 
         const attributes = {
             str: "Strength",
@@ -163,22 +165,38 @@ Hooks.on("renderItemSheet", (sheet, html, itemData) => {
             wit: "Wits",
             emp: "Emapthy"
         };
-        const options = {
+        const aOptions = {
             hash: {
                 selected: itemData.data.attributes.attribute?.value || "str"
             }
         };
-        const attributeOptions = Handlebars.helpers.selectOptions.call(this, attributes, options);
-        const snippet = `
-            <h3 class="wItem7 resource-label">Attribute</h3>
-            <div class="selectBox wItem8">
-                <select class="select-css" name="data.attributes.attribute.value">
-                    ${attributeOptions}
-                </select>
-            </div>
+        const attributeOptions = Handlebars.helpers.selectOptions.call(this, attributes, aOptions);
+        const attributeSelect = `
+            <label class="resource-label" style="grid-area: wCol13">Attribute</label>
+            <select class="select-css" name="data.attributes.attribute.value" style="grid-area: wCol14">
+                ${attributeOptions}
+            </select>
         `;
-        
-        html.find(`div.resources.grid-weapon`).append(snippet);
+        html.find(`div.grid-weapon-body`).append(attributeSelect);
+
+        const skills = {none: ""}
+        for (const [skl, skill] of Object.entries(swSkills)) {
+            skills[skl] = skill.label;
+        }
+        const sOptions = {
+            hash: {
+                selected: itemData.data.attributes.skill?.value || ""
+            }
+        };
+        const skillOptions = Handlebars.helpers.selectOptions.call(this, skills, sOptions);
+        const skillSelect = `
+            <label class="resource-label" style="grid-area: wCol15">Attribute</label>
+            <select class="select-css" name="data.attributes.skill.value" style="grid-area: wCol16; max-width: unset; width: 330%">
+                ${skillOptions}
+            </select>
+        `;
+        html.find(`div.grid-weapon-body`).append(skillSelect);
+
         return;
     }
 });
