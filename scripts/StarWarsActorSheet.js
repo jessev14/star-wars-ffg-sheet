@@ -1,6 +1,7 @@
 import alienrpgActorSheet from "/systems/alienrpg/module/actor/actor-sheet.js";
 import { moduleName } from "./star-wars-ffg-sheet.js";
 
+
 export class StarWarsActorSheet extends alienrpgActorSheet {
     constructor(...args) {
         super(...args);
