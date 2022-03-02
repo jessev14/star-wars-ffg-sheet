@@ -96,7 +96,7 @@ Hooks.once("setup", () => {
 });
 
 
-Hooks.on("renderalienrpgItemSheet", (sheet, html, itemData) => {
+Hooks.on("renderItemSheet", (sheet, html, itemData) => {
     // Allow skill-stunts items to be renamed to add stunts to new skills
     if (itemData.type === "skill-stunts") {
         html.find(`select[name="name"]`).remove();
@@ -106,7 +106,25 @@ Hooks.on("renderalienrpgItemSheet", (sheet, html, itemData) => {
         return;
     }
 
-    // For item, armor, critical-injry items, replace skill modifiers
+    // For item, armor, critical-injury items, replace skill modifiers
+    if (html.find(`div.tab.modifiers`).length) {
+        const skillList = html.find(`div.tab.modifiers`).find(`div.grid-2col`).last();
+        skillList.find(`div.modifiers`).remove();
+
+        let snippet = ``;
+        for (const [skl, skill] of Object.entries(swSkills)) {
+            const value = itemData.data.modifiers.skills[skl]?.value || 0;
+            const skillTemplate = `
+                <div class="modifiers flexrow flex-group-center">
+                    <label for="data.modifiers.skills.${skl}.value" class="resource-label">${skill.label} (${skill.ability})</label>
+                    <input type="text" class="maxboxsize" name="data.modifiers.skills.${skl}.value" value="${value}" data-dtype="Number" />
+                </div>    
+            `;
+
+            snippet += skillTemplate;
+        }
+        skillList.append(snippet);
+    }
 
     // For talent items, replace career select options with custom careers
     if (itemData.type === "talent") {
