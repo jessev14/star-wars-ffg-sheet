@@ -1,4 +1,5 @@
 import alienrpgActorSheet from "/systems/alienrpg/module/actor/actor-sheet.js";
+import { yze } from "/systems/alienrpg/module/YZEDiceRoller.js";
 import { StarWarsActorSheet } from "./StarWarsActorSheet.js";
 
 export const moduleName = "star-wars-ffg-sheet";
@@ -106,7 +107,9 @@ Hooks.once("init", () => {
     }
 
     // Patch Actor data preparation
-    libWrapper.register(moduleName, "CONFIG.Actor.documentClass.prototype._prepareCharacterData", _prepareStarWarsCharacterData, "WRAPPER");    
+    libWrapper.register(moduleName, "CONFIG.Actor.documentClass.prototype._prepareCharacterData", _prepareStarWarsCharacterData, "WRAPPER");
+    // Patch Item rolling
+    libWrapper.register(moduleName, "CONFIG.Item.documentClass.prototype.roll", starWarsRoll, "MIXED");
 });
 
 
@@ -140,25 +143,42 @@ Hooks.on("renderItemSheet", (sheet, html, itemData) => {
         skillList.append(snippet);
     }
 
-    // For talent items, replace career select options with custom careers
+    // For talent items, replace career select options with text input
     if (itemData.type === "talent") {
-        const table = game.tables.find(t => t.name === "Playable Careers");
-        if (!table) return;
+        html.find(`select[name="data.general.career.value"]`).remove();
+        html.find(`div.wItem3`).append(`<input type="text" class="textbox" name="data.general.career.value" value="${itemData.data.general.career.value}" rows="1" data-dtype="String" style="width: 87%">`);
+        
+        return;
+    }
 
-        const careers = {};
-        table.results.contents.forEach(r => {
-            const val = r.data.text;
-            careers[val] = val;
-        });
+    // Add Attribute select to weapon items
+    if (itemData.type === "weapon") {
+        html.find(`div.resources.grid-weapon`).css("grid-template-areas", '"wItem1 wItem2 wItem3 wItem4" "wItem5 wItem6 wItem7 wItem8"');
+        html.find(`h3.wItem6`).removeClass("wItem6").addClass("wItem5");
+        html.find(`div.selectBox.wItem7`).removeClass("wItem7").addClass("wItem6");
+
+        const attributes = {
+            str: "Strength",
+            agl: "Agility",
+            wit: "Wits",
+            emp: "Emapthy"
+        };
         const options = {
             hash: {
-                selected: itemData.data.general.career.value
+                selected: itemData.data.attributes.attribute?.value || "str"
             }
         };
-        const newCareers = Handlebars.helpers.selectOptions.call(this, careers, options);
-        html.find(`select[name="data.general.career.value"]`).find(`option`).remove();
-        html.find(`select[name="data.general.career.value"]`).append(newCareers.string);
-
+        const attributeOptions = Handlebars.helpers.selectOptions.call(this, attributes, options);
+        const snippet = `
+            <h3 class="wItem7 resource-label">Attribute</h3>
+            <div class="selectBox wItem8">
+                <select class="select-css" name="data.attributes.attribute.value">
+                    ${attributeOptions}
+                </select>
+            </div>
+        `;
+        
+        html.find(`div.resources.grid-weapon`).append(snippet);
         return;
     }
 });
@@ -181,5 +201,60 @@ function _prepareStarWarsCharacterData(wrapped, actorData) {
     // Remove original skills
     for (const skl of Object.keys(ogSkills)) {
         delete actorData.data.skills[skl];
+    }
+}
+
+async function starWarsRoll(wrapped, right) {
+    try {
+        await wrapped(right);
+    } catch (err) {
+        // Basic template rendering data
+        const token = this.actor.token;
+        const item = this.data;
+        if (item.type === 'armor') {
+            return;
+        }
+        const actorData = this.actor ? this.actor.data.data : {};
+        const actorid = this.actor.id;
+        const itemData = item.data;
+        const itemid = item._id;
+        game.alienrpg.rollArr.sCount = 0;
+        game.alienrpg.rollArr.multiPush = 0;
+
+        let template = 'systems/alienrpg/templates/dialog/roll-all-dialog.html';
+        // let roll;
+        let r2Data = 0;
+        let reRoll = false;
+        if (this.actor.data.type === 'character') {
+            r2Data = this.actor.getRollData().stress;
+            reRoll = false;
+        } else {
+            r2Data = 0;
+            reRoll = true;
+        }
+        let label = `${item.name} (` + game.i18n.localize('ALIENRPG.Damage') + ` : ${item.data.attributes.damage.value})`;
+        let hostile = this.actor.data.type;
+        let blind = false;
+
+        if (this.actor.data.token.disposition === -1) {
+            blind = true;
+        }
+
+        //console.log(err)
+        if (this.type !== "weapon") return;
+
+        if (item.data.header.type.value === '1') {
+            //let r1Data = actorData.skills.rangedCbt.mod + itemData.attributes.bonus.value;
+            let r1Data = itemData.attributes.bonus.value;
+            yze.yzeRoll(hostile, blind, reRoll, label, r1Data, game.i18n.localize('ALIENRPG.Black'), r2Data, game.i18n.localize('ALIENRPG.Yellow'), actorid, itemid);
+            game.alienrpg.rollArr.sCount = game.alienrpg.rollArr.r1Six + game.alienrpg.rollArr.r2Six;
+        } else if (item.data.header.type.value === '2') {
+            //let r1Data = actorData.skills.closeCbt.mod + itemData.attributes.bonus.value;
+            let r1Data = itemData.attributes.bonus.value;
+            yze.yzeRoll(hostile, blind, reRoll, label, r1Data, game.i18n.localize('ALIENRPG.Black'), r2Data, game.i18n.localize('ALIENRPG.Yellow'), actorid, itemid);
+            game.alienrpg.rollArr.sCount = game.alienrpg.rollArr.r1Six + game.alienrpg.rollArr.r2Six;
+        } else {
+            console.warn('No type on item');
+        }
     }
 }
