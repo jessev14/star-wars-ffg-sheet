@@ -6,6 +6,7 @@
     "version": "1.0.0",
     "minimumCoreVersion": "9",
     "compatibleCoreVersion": "9",
+    "system": ["alienrpg"],
     "esmodules": [
         "./scripts/star-wars-ffg-sheet.js"
     ],
