@@ -21,7 +21,7 @@ export class StarWarsActorSheet extends alienrpgActorSheet {
     getData(options) {
         const data = super.getData(options);
 
-        data.species = {};
+        data.species = {none: ""};
         const table = game.tables.find(t => t.name === "Playable Species");
 
         table?.results.contents.forEach(r => {

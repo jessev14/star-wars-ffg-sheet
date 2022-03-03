@@ -107,13 +107,14 @@ Hooks.once("init", () => {
     }
 
     // Patch Actor data preparation
-    libWrapper.register(moduleName, "CONFIG.Actor.documentClass.prototype._prepareCharacterData", _prepareStarWarsCharacterData, "WRAPPER");
+    //libWrapper.register(moduleName, "CONFIG.Actor.documentClass.prototype._prepareCharacterData", _prepareStarWarsCharacterData, "WRAPPER"); // SKL
     // Patch Item rolling
-    libWrapper.register(moduleName, "CONFIG.Item.documentClass.prototype.roll", starWarsRoll, "MIXED");
+    //libWrapper.register(moduleName, "CONFIG.Item.documentClass.prototype.roll", starWarsRoll, "MIXED"); // INV
 });
 
 
 Hooks.on("renderItemSheet", (sheet, html, itemData) => {
+    return; // SKL
     // Allow skill-stunts items to be renamed to add stunts to new skills
     if (itemData.type === "skill-stunts") {
         html.find(`select[name="name"]`).remove();
