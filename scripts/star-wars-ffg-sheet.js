@@ -262,8 +262,8 @@ async function starWarsRoll(wrapped, right) {
             blind = true;
         }
 
-        //const skillBonus = actorData.skills[itemData.attributes.skill.value].mod - actorData.attri
-        const r1Data = actorData.attributes[itemData.attributes.attribute.value].mod + (actorData.skills[itemData.attributes.skill.value].mod ) + itemData.attributes.bonus.value;
+        const skillBonus = actorData.skills[itemData.attributes.skill.value].mod - actorData.attributes[swSkills[itemData.attributes.skill.value].ability].value;
+        const r1Data = actorData.attributes[itemData.attributes.attribute.value].mod + skillBonus + itemData.attributes.bonus.value;
         if (item.data.header.type.value === '1') {
             yze.yzeRoll(hostile, blind, reRoll, label, r1Data, game.i18n.localize('ALIENRPG.Black'), r2Data, game.i18n.localize('ALIENRPG.Yellow'), actorid, itemid);
             game.alienrpg.rollArr.sCount = game.alienrpg.rollArr.r1Six + game.alienrpg.rollArr.r2Six;
