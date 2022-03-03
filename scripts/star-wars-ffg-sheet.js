@@ -153,10 +153,6 @@ Hooks.on("renderItemSheet", (sheet, html, itemData) => {
 
     // Add Attribute and Skill selects to weapon items
     if (itemData.type === "weapon") {
-        //html.find(`div.resources.grid-weapon`).css("grid-template-areas", '"wItem1 wItem2 wItem3 wItem4" "wItem5 wItem6 wItem7 wItem8"');
-        //html.find(`h3.wItem6`).removeClass("wItem6").addClass("wItem5");
-        //html.find(`div.selectBox.wItem7`).removeClass("wItem7").addClass("wItem6");
-
         html.find(`div.grid-weapon-body`).css("grid-template-areas", '"wCol1 wCol2 wCol3 wCol4 wCol5 wCol6" "wCol7 wCol8 wCol9 wCol10 wCol11 wCol12" "wCol13 wCol14 wCol15 wCol16 wCol17 wCol18"');
 
         const attributes = {
@@ -213,6 +209,18 @@ function _prepareStarWarsCharacterData(wrapped, actorData) {
     // Call original function to handle core data preparation
     wrapped(actorData);
 
+    // Add item modifiers to new skills
+    for (const [skey, iAttrib] of Object.entries(actorData.items.contents)) {
+        const Attrib = iAttrib.data;
+        if (!(Attrib.type === 'item' || Attrib.type === 'critical-injury' || Attrib.type === 'armor')) continue;
+        if (Attrib.data.header.active !== true) continue;
+
+        let skillBase = Attrib.data.modifiers.skills;
+        for (let [skkey, sAttrib] of Object.entries(skillBase)) {
+            setProperty(actorData, `data.skills.${skkey}.mod`, actorData.data.skills[skkey].mod + sAttrib.value);
+        }    
+    }
+
     // Remove original skills
     for (const skl of Object.keys(ogSkills)) {
         delete actorData.data.skills[skl];
@@ -254,7 +262,8 @@ async function starWarsRoll(wrapped, right) {
             blind = true;
         }
 
-        const r1Data = actorData.attributes[itemData.attributes.attribute.value].mod + itemData.attributes.bonus.value;
+        //const skillBonus = actorData.skills[itemData.attributes.skill.value].mod - actorData.attri
+        const r1Data = actorData.attributes[itemData.attributes.attribute.value].mod + (actorData.skills[itemData.attributes.skill.value].mod ) + itemData.attributes.bonus.value;
         if (item.data.header.type.value === '1') {
             yze.yzeRoll(hostile, blind, reRoll, label, r1Data, game.i18n.localize('ALIENRPG.Black'), r2Data, game.i18n.localize('ALIENRPG.Yellow'), actorid, itemid);
             game.alienrpg.rollArr.sCount = game.alienrpg.rollArr.r1Six + game.alienrpg.rollArr.r2Six;
