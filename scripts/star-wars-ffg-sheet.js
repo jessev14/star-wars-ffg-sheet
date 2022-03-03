@@ -108,6 +108,8 @@ Hooks.once("init", () => {
 
     // Patch Actor data preparation
     libWrapper.register(moduleName, "CONFIG.Actor.documentClass.prototype._prepareCharacterData", _prepareStarWarsCharacterData, "WRAPPER");
+    // Patch Actor panic condition to draw from custom roll table
+    libWrapper.register(moduleName, "CONFIG.Actor.documentClass.prototype.morePanic", starWarsMorePanic, "OVERRIDE");
     // Patch Item rolling
     libWrapper.register(moduleName, "CONFIG.Item.documentClass.prototype.roll", starWarsRoll, "MIXED");
 });
@@ -225,6 +227,12 @@ function _prepareStarWarsCharacterData(wrapped, actorData) {
     for (const skl of Object.keys(ogSkills)) {
         delete actorData.data.skills[skl];
     }
+}
+
+function starWarsMorePanic(pCheck) {
+    const table = game.tables.getName("Panic Table");
+    const result = table.getResultsForRoll(pCheck)[0];
+    return result?.data.text || "Panic Level not defined in Panic Table.";
 }
 
 async function starWarsRoll(wrapped, right) {
