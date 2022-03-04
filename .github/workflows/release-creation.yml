@@ -19,10 +19,10 @@ jobs:
       env:
         version: ${{github.event.release.tag_name}}
         manifest: https://github.com/${{github.repository}}/releases/latest/download/module.json
-        download: https://github.com/${{github.repository}}/releases/download/${{github.event.release.tag_name}}/PTC.zip
+        download: https://github.com/${{github.repository}}/releases/download/${{github.event.release.tag_name}}/SWFFG.zip
 
     # create a zip file with all files required by the module to add to the release
-    - run: zip -r ./PTC.zip module.json scripts/ lang/ lib/
+    - run: zip -r ./SWFFG.zip module.json scripts/ lib/ styles/ templates/
 
     # Create a release for this specific version
     - name: Update Release with Files
@@ -34,7 +34,7 @@ jobs:
         draft: false
         prerelease: false
         token: ${{ secrets.GITHUB_TOKEN }}
-        artifacts: './module.json, ./PTC.zip'
+        artifacts: './module.json, ./SWFFG.zip'
         tag: ${{ github.event.release.tag_name }}
         body: ${{ github.event.release.body }}
 
@@ -49,6 +49,6 @@ jobs:
         draft: false
         prerelease: false
         token: ${{ secrets.GITHUB_TOKEN }}
-        artifacts: './module.json,./PTC.zip'
+        artifacts: './module.json,./SWFFG.zip'
         tag: latest
         body: ${{ github.event.release.body }}
