@@ -27,7 +27,7 @@ const swSkills = {
     },
     cra: {
         label: "Crafting",
-        ability: "str"
+        ability: "wit"
     },
     dex: {
         label: "Dexterity",
