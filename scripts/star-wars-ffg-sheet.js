@@ -111,7 +111,7 @@ Hooks.once("init", () => {
     // Patch Actor panic condition to draw from custom roll table
     //libWrapper.register(moduleName, "CONFIG.Actor.documentClass.prototype.morePanic", starWarsMorePanic, "OVERRIDE");
     // Patch Item rolling
-    libWrapper.register(moduleName, "CONFIG.Item.documentClass.prototype.roll", starWarsRoll, "MIXED");
+    //libWrapper.register(moduleName, "CONFIG.Item.documentClass.prototype.roll", starWarsRoll, "MIXED");
 });
 
 
