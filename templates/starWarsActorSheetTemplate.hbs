@@ -8,25 +8,31 @@
             <div class="resources grid grid-4col">
                 {{!-- Health and Stress --}}
                 <h2 for="data.health.value" class="resource-label">{{ localize "ALIENRPG.Health"}}</h2>
-                <div class="resource-content">
+                <div class="resource-content" style="width: 200px; margin-left: -20px">
                     <button type="button" class="minus-btn" data-pmbut="minusHealth"><i
                             class="fas fa-minus-square fa-xs" title="Minus"></i></button>
                     <input type="text" class="maxboxsize minHealth" name="data.header.health.value"
                         value="{{data.header.health.value}}" data-dtype="Number" />
                     <button type="button" class="plus-btn" data-pmbut="plusHealth"><i class="fas fa-plus-square fa-xs"
                             title="Plus"></i></button>
+                    <span class="sep">/</span>
+                    <input type="text" class="maxboxsize minHealth" name="data.header.health.swMax"
+                        value="{{data.header.health.swMax}}" data-dtype="Number" />
                 </div>
                 <h2 for="data.header.stress.value" class="resource-label rollable"
                     title="{{localize 'ALIENRPG.RollPanic'}}" data-panicroll="{{data.header.stress.value}}"
                     data-mod="{{data.header.stress.mod}}" data-label="{{localize " ALIENRPG.Stress"}}">{{localize
                     "ALIENRPG.Stress"}}</h2>
-                <div class="resource-content">
+                <div class="resource-content" style="width: 200px; margin-left: -33px">
                     <button type="button" class="minus-btn" data-pmbut="minusStress"><i
                             class="fas fa-minus-square fa-xs" title="Minus"></i></button>
                     <input type="text" class="maxboxsize minStress" name="data.header.stress.value"
                         value="{{data.header.stress.value}}" data-dtype="Number" />
                     <button type="button" class="plus-btn" data-pmbut="plusStress"><i class="fas fa-plus-square fa-xs"
                             title="Plus"></i></button>
+                    <span class="sep">/</span>
+                    <input type="text" class="maxboxsize minStress" name="data.header.stress.swMax"
+                        value="{{data.header.stress.swMax}}" data-dtype="Number" />
                 </div>
                 {{!-- Attributes --}}
                 <div class="abilities grid-Char-Att">
@@ -237,6 +243,7 @@
                         {{/if}}
                     </div>
                     <br>
+                    {{!-- 
                     <h3 class="condition" data-key="overwatch">
                         <a class="overwatch-toggle">
                             {{#if data.general.overwatch}}
@@ -247,6 +254,7 @@
                         </a>
                         {{localize "ALIENRPG.Overwatch"}}
                     </h3>
+                    --}}
 
                     <br>
                     <h3 style="text-align: center; font-weight: bold;" class="resource-label">{{radiationReplacement}}</h3>

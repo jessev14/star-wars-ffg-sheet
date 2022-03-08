@@ -27,7 +27,7 @@ const swSkills = {
     },
     cra: {
         label: "Crafting",
-        ability: "str"
+        ability: "wit"
     },
     dex: {
         label: "Dexterity",
@@ -107,14 +107,15 @@ Hooks.once("init", () => {
     }
 
     // Patch Actor data preparation
-    //libWrapper.register(moduleName, "CONFIG.Actor.documentClass.prototype._prepareCharacterData", _prepareStarWarsCharacterData, "WRAPPER"); // SKL
+    libWrapper.register(moduleName, "CONFIG.Actor.documentClass.prototype._prepareCharacterData", _prepareStarWarsCharacterData, "WRAPPER");
+    // Patch Actor panic condition to draw from custom roll table
+    libWrapper.register(moduleName, "CONFIG.Actor.documentClass.prototype.morePanic", starWarsMorePanic, "OVERRIDE");
     // Patch Item rolling
-    //libWrapper.register(moduleName, "CONFIG.Item.documentClass.prototype.roll", starWarsRoll, "MIXED"); // INV
+    libWrapper.register(moduleName, "CONFIG.Item.documentClass.prototype.roll", starWarsRoll, "MIXED");
 });
 
 
 Hooks.on("renderItemSheet", (sheet, html, itemData) => {
-    return; // SKL
     // Allow skill-stunts items to be renamed to add stunts to new skills
     if (itemData.type === "skill-stunts") {
         html.find(`select[name="name"]`).remove();
@@ -226,6 +227,12 @@ function _prepareStarWarsCharacterData(wrapped, actorData) {
     for (const skl of Object.keys(ogSkills)) {
         delete actorData.data.skills[skl];
     }
+}
+
+function starWarsMorePanic(pCheck) {
+    const table = game.tables.getName("Panic Table");
+    const result = table.getResultsForRoll(pCheck)[0];
+    return result?.data.text || "Panic Level not defined in Panic Table.";
 }
 
 async function starWarsRoll(wrapped, right) {
