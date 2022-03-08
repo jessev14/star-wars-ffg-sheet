@@ -109,7 +109,7 @@ Hooks.once("init", () => {
     // Patch Actor data preparation
     libWrapper.register(moduleName, "CONFIG.Actor.documentClass.prototype._prepareCharacterData", _prepareStarWarsCharacterData, "WRAPPER");
     // Patch Actor panic condition to draw from custom roll table
-    libWrapper.register(moduleName, "CONFIG.Actor.documentClass.prototype.morePanic", starWarsMorePanic, "OVERRIDE");
+    //libWrapper.register(moduleName, "CONFIG.Actor.documentClass.prototype.morePanic", starWarsMorePanic, "OVERRIDE");
     // Patch Item rolling
     libWrapper.register(moduleName, "CONFIG.Item.documentClass.prototype.roll", starWarsRoll, "MIXED");
 });
