@@ -1,6 +1,7 @@
 import alienrpgActorSheet from "/systems/alienrpg/module/actor/actor-sheet.js";
 import { yze } from "/systems/alienrpg/module/YZEDiceRoller.js";
 import { StarWarsActorSheet } from "./StarWarsActorSheet.js";
+import { libWrapper } from "../lib/shim.js"
 
 export const moduleName = "star-wars-ffg-sheet";
 
