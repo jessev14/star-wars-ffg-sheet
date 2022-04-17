@@ -18,12 +18,11 @@ export class StarWarsActorSheet extends alienrpgActorSheet {
         return `modules/${moduleName}/templates/starWarsActorSheetTemplate.hbs`;
     }
 
-    getData(options) {
-        const data = super.getData(options);
+    async getData(options) {
+        const data = await super.getData(options);
 
         data.species = {none: ""};
         const table = game.tables.find(t => t.name === "Playable Species");
-
         table?.results.contents.forEach(r => {
             const val = r.data.text;
             data.species[val] = val;
