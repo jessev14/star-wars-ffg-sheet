@@ -5,77 +5,21 @@ import { libWrapper } from "../lib/shim.js"
 
 export const moduleName = "star-wars-ffg-sheet";
 
-const swSkills = {
-    ast: {
-        label: "Astrogation",
-        ability: "wit"
-    },
-    ath: {
-        label: "Athletics",
-        ability: "str"
-    },
-    att: {
-        label: "Attunement",
-        ability: "emp"
-    },
-    com: {
-        label: "ComTech",
-        ability: "wit"
-    },
-    dec: {
-        label: "Deception",
-        ability: "emp"
-    },
-    cra: {
-        label: "Crafting",
-        ability: "wit"
-    },
-    dex: {
-        label: "Dexterity",
-        ability: "agl"
-    },
-    end: {
-        label: "Endurance",
-        ability: "str"
-    },
-    ins: {
-        label: "Insight",
-        ability: "emp"
-    },
-    inv: {
-        label: "Investigation",
-        ability: "wit"
-    },
-    fer: {
-        label: "Ferocity",
-        ability: "str"
-    },
-    mob: {
-        label: "Mobility",
-        ability: "agl"
-    },
-    obs: {
-        label: "Observation",
-        ability: "wit"
-    },
-    per: {
-        label: "Persuasion",
-        ability: "emp"
-    },
-    pil: {
-        label: "Piloting",
-        ability: "agl"
-    },
-    ste: {
-        label: "Stealth",
-        ability: "agl"
-    }
-};
+let swSkills;
 let ogSkills;
 
 
 Hooks.once("init", () => {
     // Register module settings
+    game.settings.register(moduleName, "fantasyMode", {
+        name: "Fantasy Mode",
+        scope: "world",
+        config: true,
+        type: Boolean,
+        default: false,
+        onChange: () => window.location.reload()
+    });
+
     game.settings.register(moduleName, "storyPointsText", {
         name: "Replace Story Points Label",
         hint: "",
@@ -93,6 +37,146 @@ Hooks.once("init", () => {
         type: String,
         default: "Radiation"
     });
+
+    if (!game.settings.get(moduleName, "fantasyMode")) {
+        swSkills = {
+            ast: {
+                label: "Astrogation",
+                ability: "wit"
+            },
+            ath: {
+                label: "Athletics",
+                ability: "str"
+            },
+            att: {
+                label: "Attunement",
+                ability: "emp"
+            },
+            com: {
+                label: "ComTech",
+                ability: "wit"
+            },
+            dec: {
+                label: "Deception",
+                ability: "emp"
+            },
+            cra: {
+                label: "Crafting",
+                ability: "wit"
+            },
+            dex: {
+                label: "Dexterity",
+                ability: "agl"
+            },
+            end: {
+                label: "Endurance",
+                ability: "str"
+            },
+            ins: {
+                label: "Insight",
+                ability: "emp"
+            },
+            inv: {
+                label: "Investigation",
+                ability: "wit"
+            },
+            fer: {
+                label: "Ferocity",
+                ability: "str"
+            },
+            mob: {
+                label: "Mobility",
+                ability: "agl"
+            },
+            obs: {
+                label: "Observation",
+                ability: "wit"
+            },
+            per: {
+                label: "Persuasion",
+                ability: "emp"
+            },
+            pil: {
+                label: "Piloting",
+                ability: "agl"
+            },
+            ste: {
+                label: "Stealth",
+                ability: "agl"
+            },
+            att: {
+                label: "Attunement",
+                ability: "emp"
+            },
+        }
+    } else {
+        swSkills = {
+            ath: {
+                label: "Athletics",
+                ability: "str"
+            },
+            cra: {
+                label: "Crafting",
+                ability: "str"
+            },
+            end: {
+                label: "Endurance",
+                ability: "str"
+            },
+            fer: {
+                label: "Ferocity",
+                ability: "str"
+            },
+            dex: {
+                label: "Dexterity",
+                ability: "agl"
+            },
+            mob: {
+                label: "Mobility",
+                ability: "agl"
+            },
+            prf: {
+                label: "Performance",
+                ability: "agl"
+            },
+            ste: {
+                label: "Stealth",
+                ability: "agl"
+            },
+            att: {
+                label: "Attunement",
+                ability: "emp"
+            },
+            dec: {
+                label: "Deception",
+                ability: "emp"
+            },
+            ins: {
+                label: "Insight",
+                ability: "emp"
+            },
+            per: {
+                label: "Persuasion",
+                ability: "emp"
+            },
+            inv: {
+                label: "Investigation",
+                ability: "wit"
+            },
+            lor: {
+                label: "Lore",
+                ability: "wit"
+            },
+            prc: {
+                label: "Perception",
+                ability: "wit"
+            },
+            sur: {
+                label: "Survival",
+                ability: "wit"
+            }
+        };
+    };
 
     // Register sheet application classes
     Actors.unregisterSheet("alienrpg", alienrpgActorSheet);
@@ -205,6 +289,10 @@ function _prepareStarWarsCharacterData(wrapped, actorData) {
     // Add new skills; Perform this before calling original function so that original function processes these skills
     mergeObject(actorData.data.skills, swSkills);
     for (const [skl, skill] of Object.entries(actorData.data.skills)) {
+        if (!(skl in swSkills) && !(skl in ogSkills)) {
+            delete actorData.data.skills[skl];
+            continue;
+        }
         if (!skill.value) setProperty(actorData, `data.skills.${skl}.value`, 0);
         if (!skill.description) setProperty(actorData, `data.skills.${skl}.description`, skill.label);
     }
@@ -220,6 +308,7 @@ function _prepareStarWarsCharacterData(wrapped, actorData) {
 
         let skillBase = Attrib.data.modifiers.skills;
         for (let [skkey, sAttrib] of Object.entries(skillBase)) {
+            if (!(skkey in swSkills) && !(skkey in ogSkills)) continue;
             setProperty(actorData, `data.skills.${skkey}.mod`, actorData.data.skills[skkey].mod + sAttrib.value);
         }    
     }
