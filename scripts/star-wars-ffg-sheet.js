@@ -317,6 +317,10 @@ function _prepareStarWarsCharacterData(wrapped, actorData) {
     for (const skl of Object.keys(ogSkills)) {
         delete actorData.data.skills[skl];
     }
+
+    // Change Story Point Maximum to 10
+    setProperty(actorData, 'data.general.sp.max', 10);
+
 }
 
 function starWarsMorePanic(pCheck) {
