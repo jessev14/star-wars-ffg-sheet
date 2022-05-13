@@ -31,6 +31,14 @@ export class StarWarsActorSheet extends alienrpgActorSheet {
         data.storyPointsReplacement = game.settings.get(moduleName, "storyPointsText");
         data.radiationReplacement = game.settings.get(moduleName, "radiationText");
 
+        data.data.skills = Object.entries(data.data.skills)
+            .sort((a, b) => {
+                return a[1].label > b[1].label ? 1 : -1;
+            })
+            .map(([k, v]) => {
+            return {...v, key: k}
+        });
+
         return data;
     }
 }
