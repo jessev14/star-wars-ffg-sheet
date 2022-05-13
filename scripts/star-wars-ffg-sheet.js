@@ -240,8 +240,9 @@ Hooks.on("renderItemSheet", (sheet, html, itemData) => {
 
     // Add Attribute and Skill selects to weapon items
     if (itemData.type === "weapon") {
-        html.find(`div.grid-weapon-body`).css("grid-template-areas", '"wCol1 wCol2 wCol3 wCol4 wCol5 wCol6" "wCol7 wCol8 wCol9 wCol10 wCol11 wCol12" "wCol13 wCol14 wCol15 wCol16 wCol17 wCol18"');
+        html.find(`div.resources.grid-weapon`).css("grid-template-areas", '"wItem1 wItem2 wItem3 wItem4" "wItem5 wItem6 wItem7 wItem7" "wItem8 wItem9 wItem10 wItem11"');
 
+        
         const attributes = {
             str: "Strength",
             agl: "Agility",
@@ -255,12 +256,12 @@ Hooks.on("renderItemSheet", (sheet, html, itemData) => {
         };
         const attributeOptions = Handlebars.helpers.selectOptions.call(this, attributes, aOptions);
         const attributeSelect = `
-            <label class="resource-label" style="grid-area: wCol13">Attribute</label>
-            <select class="select-css" name="data.attributes.attribute.value" style="grid-area: wCol14">
+            <label class="resource-label" style="grid-area: wItem8">Attribute</label>
+            <select class="select-css" name="data.attributes.attribute.value" style="grid-area: wItem9">
                 ${attributeOptions}
             </select>
         `;
-        html.find(`div.grid-weapon-body`).append(attributeSelect);
+        html.find(`div.grid-weapon`).append(attributeSelect);
 
         const skills = {none: ""}
         for (const [skl, skill] of Object.entries(swSkills)) {
@@ -273,14 +274,12 @@ Hooks.on("renderItemSheet", (sheet, html, itemData) => {
         };
         const skillOptions = Handlebars.helpers.selectOptions.call(this, skills, sOptions);
         const skillSelect = `
-            <label class="resource-label" style="grid-area: wCol15">Skill</label>
-            <select class="select-css" name="data.attributes.skill.value" style="grid-area: wCol16; max-width: unset; width: 330%">
+            <label class="resource-label" style="grid-area: wItem10">Skill</label>
+            <select class="select-css" name="data.attributes.skill.value" style="grid-area: wItem11; max-width: unset; width: 86%">
                 ${skillOptions}
             </select>
         `;
-        html.find(`div.grid-weapon-body`).append(skillSelect);
-
-        return;
+        html.find(`div.grid-weapon`).append(skillSelect);
     }
 });
 
