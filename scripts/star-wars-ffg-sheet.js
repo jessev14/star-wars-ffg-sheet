@@ -362,7 +362,6 @@ async function starWarsRoll(wrapped, right) {
                     blind = true;
                 }
 
-
                 r2Data += stressMod;
         
                 const skillBonus = actorData.skills[itemData.attributes.skill.value]?.mod - actorData.attributes[swSkills[itemData.attributes.skill.value]?.ability]?.value;
