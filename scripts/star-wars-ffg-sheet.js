@@ -330,6 +330,58 @@ function starWarsMorePanic(pCheck) {
 }
 
 async function starWarsRoll(wrapped, right) {
+    if (right && this.type === "weapon") {
+        Hooks.once("renderDialog", (app, html, data) => {
+            console.log(app);
+            app.data.close = () => { };
+            app.data.buttons.one.callback = html => {
+                const actorid = this.actor.id;
+                const actorData = this.actor ? this.actor.data.data : {};
+                const item = this.data;
+                const itemid = item._id;
+                let modifier = parseInt(html.find('[name=modifier]')[0].value);
+                let stressMod = parseInt(html.find('[name=stressMod]')[0].value);
+                const itemData = item.data;
+                game.alienrpg.rollArr.sCount = 0;
+                game.alienrpg.rollArr.multiPush = 0;
+        
+                let r2Data = 0;
+                let reRoll = false;
+                if (this.actor.data.type === 'character') {
+                    r2Data = this.actor.getRollData().stress;
+                    reRoll = false;
+                } else {
+                    r2Data = 0;
+                    reRoll = true;
+                }
+                let label = `${item.name} (` + game.i18n.localize('ALIENRPG.Damage') + ` : ${item.data.attributes.damage.value})`;
+                let hostile = this.actor.data.type;
+                let blind = false;
+        
+                if (this.actor.data.token.disposition === -1) {
+                    blind = true;
+                }
+
+
+                r2Data += stressMod;
+        
+                const skillBonus = actorData.skills[itemData.attributes.skill.value]?.mod - actorData.attributes[swSkills[itemData.attributes.skill.value]?.ability]?.value;
+                const r1Data = actorData.attributes[itemData.attributes.attribute.value].mod + (skillBonus || 0) + itemData.attributes.bonus.value + modifier;
+                if (item.data.header.type.value === '1') {
+                    yze.yzeRoll(hostile, blind, reRoll, label, r1Data, game.i18n.localize('ALIENRPG.Black'), r2Data, game.i18n.localize('ALIENRPG.Yellow'), actorid, itemid);
+                    game.alienrpg.rollArr.sCount = game.alienrpg.rollArr.r1Six + game.alienrpg.rollArr.r2Six;
+                } else if (item.data.header.type.value === '2') {
+                    yze.yzeRoll(hostile, blind, reRoll, label, r1Data, game.i18n.localize('ALIENRPG.Black'), r2Data, game.i18n.localize('ALIENRPG.Yellow'), actorid, itemid);
+                    game.alienrpg.rollArr.sCount = game.alienrpg.rollArr.r1Six + game.alienrpg.rollArr.r2Six;
+                } else {
+                    console.warn('No type on item');
+                }
+        
+            }
+
+        });
+    }
+
     try {
         await wrapped(right);
     } catch (err) {
